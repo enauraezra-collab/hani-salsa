@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoFood - Pesan Makanan Favoritmu</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f7f7f7;
+            color: #222;
+        }
+
+        header {
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 12px rgba(0,0,0,.08);
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: auto;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 800;
+            color: #00aa13;
+        }
+
+        .logo span {
+            color: #111;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #444;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .nav-menu a:hover {
+            color: #00aa13;
+        }
+
+        .cart-btn {
+            background: #00aa13;
+            color: white;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 22px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #00aa13, #05c529);
+            min-height: 360px;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            margin: auto;
+            padding: 50px 20px;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            max-width: 650px;
+            line-height: 1.1;
+            margin-bottom: 18px;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 550px;
+            opacity: .95;
+        }
+
+        .search-box {
+            max-width: 650px;
+            background: white;
+            border-radius: 12px;
+            padding: 7px;
+            display: flex;
+            box-shadow: 0 8px 25px rgba(0,0,0,.15);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 14px;
+            font-size: 15px;
+            border-radius: 10px;
+        }
+
+        .search-box button {
+            background: #111;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 35px 20px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .section-title h2 {
+            font-size: 24px;
+        }
+
+        .section-title a {
+            color: #00aa13;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 15px;
+        }
+
+        .category {
+            background: white;
+            border-radius: 15px;
+            padding: 18px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: .2s;
+            border: 1px solid #eee;
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,.08);
+        }
+
+        .category-icon {
+            width: 55px;
+            height: 55px;
+            margin: auto;
+            background: #e9f9eb;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .category p {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .promo-section {
+            margin-top: 35px;
+        }
+
+        .promo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .promo {
+            min-height: 180px;
+            border-radius: 18px;
+            padding: 25px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo:nth-child(1) {
+            background: linear-gradient(135deg, #ff7a00, #ffb000);
+        }
+
+        .promo:nth-child(2) {
+            background: linear-gradient(135deg, #00a83b, #00cf54);
+        }
+
+        .promo:nth-child(3) {
+            background: linear-gradient(135deg, #673ab7, #9c5cff);
+        }
+
+        .promo h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .promo p {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .promo button {
+            border: none;
+            padding: 9px 15px;
+            background: white;
+            color: #222;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .restaurant-section {
+            margin-top: 40px;
+        }
+
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .restaurant-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            transition: .2s;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,.09);
+        }
+
+        .restaurant-image {
+            height: 170px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+        }
+
+        .food-1 {
+            background: linear-gradient(135deg, #ffdf9e, #ffb84d);
+        }
+
+        .food-2 {
+            background: linear-gradient(135deg, #ffc5c5, #ff7777);
+        }
+
+        .food-3 {
+            background: linear-gradient(135deg, #f7e7a9, #e8c85a);
+        }
+
+        .food-4 {
+            background: linear-gradient(135deg, #bde8ff, #63bff0);
+        }
+
+        .food-5 {
+            background: linear-gradient(135deg, #d7ffc3, #75d850);
+        }
+
+        .food-6 {
+            background: linear-gradient(135deg, #ffd5f2, #f28bd1);
+        }
+
+        .food-7 {
+            background: linear-gradient(135deg, #d8d8ff, #8989ee);
+        }
+
+        .food-8 {
+            background: linear-gradient(135deg, #ffd4b8, #ff985e);
+        }
+
+        .restaurant-info {
+            padding: 15px;
+        }
+
+        .restaurant-info h3 {
+            font-size: 17px;
+            margin-bottom: 6px;
+        }
+
+        .restaurant-info p {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .rating {
+            color: #f5a400;
+            font-weight: bold;
+        }
+
+        .price {
+            color: #555;
+            font-size: 13px;
+        }
+
+        .food-section {
+            margin-top: 45px;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .food-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .food-image {
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        .food-info {
+            padding: 15px;
+        }
+
+        .food-info h3 {
+            margin-bottom: 7px;
+            font-size: 16px;
+        }
+
+        .food-info p {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .food-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .food-price {
+            font-weight: bold;
+        }
+
+        .add-btn {
+            background: #00aa13;
+            border: none;
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .add-btn:hover {
+            background: #008c10;
+        }
+
+        .info-banner {
+            margin-top: 50px;
+            background: #111;
+            color: white;
+            border-radius: 18px;
+            padding: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-banner h2 {
+            margin-bottom: 8px;
+        }
+
+        .info-banner p {
+            color: #bbb;
+        }
+
+        .download-btn {
+            background: #00aa13;
+            border: none;
+            color: white;
+            padding: 13px 22px;
+            border-radius: 9px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        footer {
+            background: #fff;
+            margin-top: 60px;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: auto;
+            padding: 45px 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-logo {
+            font-size: 27px;
+            color: #00aa13;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .footer-column h4 {
+            margin-bottom: 15px;
+        }
+
+        .footer-column a {
+            display: block;
+            text-decoration: none;
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .footer-column a:hover {
+            color: #00aa13;
+        }
+
+        .copyright {
+            border-top: 1px solid #eee;
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .cart-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: white;
+            z-index: 2000;
+            box-shadow: -5px 0 25px rgba(0,0,0,.15);
+            transition: .3s;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-panel.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .close-cart {
+            border: none;
+            background: #eee;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #888;
+            padding-top: 80px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .cart-item p {
+            color: #00aa13;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .remove-item {
+            border: none;
+            background: #ffecec;
+            color: #e53935;
+            border-radius: 6px;
+            padding: 6px 9px;
+            cursor: pointer;
+        }
+
+        .cart-footer {
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            background: #00aa13;
+            color: white;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 1500;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .notification {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: #111;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: .3s;
+            z-index: 3000;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @media(max-width: 900px) {
+            .categories {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .restaurant-grid,
+            .food-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .promo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .hero-content h1 {
+                font-size: 38px;
+            }
+        }
+
+        @media(max-width: 600px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .navbar {
+                height: 60px;
+            }
+
+            .logo {
+                font-size: 25px;
+            }
+
+            .hero {
+                min-height: 420px;
+            }
+
+            .hero-content h1 {
+                font-size: 34px;
+            }
+
+            .search-box {
+                flex-direction: column;
+                background: transparent;
+                box-shadow: none;
+                gap: 8px;
+            }
+
+            .search-box input {
+                padding: 15px;
+            }
+
+            .search-box button {
+                padding: 14px;
+            }
+
+            .categories {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+
+            .category {
+                padding: 12px 5px;
+            }
+
+            .category-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 22px;
+            }
+
+            .category p {
+                font-size: 11px;
+            }
+
+            .restaurant-grid,
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-banner {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-panel {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">go<span>food</span></div>
+
+        <div class="nav-menu">
+            <a href="#home">Home</a>
+            <a href="#kategori">Kategori</a>
+            <a href="#restoran">Restoran</a>
+            <a href="#makanan">Makanan</a>
+        </div>
+
+        <button class="cart-btn" onclick="openCart()">
+            🛒 Keranjang <span id="cartCount">0</span>
+        </button>
+    </nav>
+</header>
+
+<main id="home">
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Makanan favoritmu, langsung sampai depan pintu.</h1>
+
+            <p>
+                Cari makanan lezat dari restoran favoritmu
+                dan pesan dengan mudah dalam beberapa klik.
+            </p>
+
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Cari makanan atau restoran..."
+                    onkeyup="searchFood()"
+                >
+
+                <button onclick="searchFood()">
+                    Cari
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="kategori">
+
+        <div class="section-title">
+            <h2>Mau makan apa?</h2>
+            <a href="#">Lihat semua</a>
+        </div>
+
+        <div class="categories">
+
+            <div class="category">
+                <div class="category-icon">🍚</div>
+                <p>Nasi</p>
+            </div>
+
+            <div class="category">
+                <div class="category-icon">🍜</div>
+                <p>Mie</p>
+            </div>
+
+            <div class="category">
+                <div class="category-icon">🍔</div>
+                <p>Fast Food</p>
+            </div>
+
+            <div class="category">
+                <div class="category-icon">🍕</div>
+                <p>Pizza</p>
+            </div>
+
+            <div class="category">
+                <div class="category-icon">🍗</div>
+                <p>Ayam</p>
+            </div>
+
+            <div class="category">
+                <div class="category-icon">🥗</div>
+                <p>Sehat</p>
+            </div>
+
+            <div class="category">
+                <div class="category-icon">🍰</div>
+                <p>Dessert</p>
+            </div>
+
+            <div class="category">
+                <div class="category-icon">☕</div>
+                <p>Minuman</p>
+            </div>
+
+        </div>
+
+        <div class="promo-section">
+
+            <div class="section-title">
+                <h2>Promo pilihan hari ini</h2>
+                <a href="#">Lihat semua</a>
+            </div>
+
+            <div class="promo-grid">
+
+                <div class="promo">
+                    <h3>Diskon 50%</h3>
+                    <p>
+                        Nikmati makanan favorit dengan
+                        harga lebih hemat.
+                    </p>
+                    <button onclick="showPromo('HEMAT50')">
+                        Gunakan Promo
+                    </button>
+                </div>
+
+                <div class="promo">
+                    <h3>Gratis Ongkir</h3>
+                    <p>
+                        Pesan sekarang dan dapatkan
+                        potongan biaya antar.
+                    </p>
+                    <button onclick="showPromo('GRATISONGKIR')">
+                        Gunakan Promo
+                    </button>
+                </div>
+
+                <div class="promo">
+                    <h3>Voucher Rp20K</h3>
+                    <p>
+                        Gunakan voucher spesial untuk
+                        pesanan pilihan.
+                    </p>
+                    <button onclick="showPromo('MAKAN20')">
+                        Gunakan Promo
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <section class="restaurant-section" id="restoran">
+
+            <div class="section-title">
+                <h2>Restoran populer</h2>
+                <a href="#">Lihat semua</a>
+            </div>
+
+            <div class="restaurant-grid">
+
+                <div class="restaurant-card">
+                    <div class="restaurant-image food-1">🍛</div>
+                    <div class="restaurant-info">
+                        <h3>Warung Nusantara</h3>
+                        <p>Masakan Indonesia • 1.2 km</p>
+                        <span class="rating">★ 4.8</span>
+                        <span class="price"> • Rp25K–50K</span>
+                    </div>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-image food-2">🍔</div>
+                    <div class="restaurant-info">
+                        <h3>Burger House</h3>
+                        <p>Burger • Fast Food • 2.1 km</p>
+                        <span class="rating">★ 4.7</span>
+                        <span class="price"> • Rp30K–70K</span>
+                    </div>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-image food-3">🍜</div>
+                    <div class="restaurant-info">
+                        <h3>Mie Mantap</h3>
+                        <p>Mie • Indonesia • 1.8 km</p>
+                        <span class="rating">★ 4.9</span>
+                        <span class="price"> • Rp15K–40K</span>
+                    </div>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-image food-4">🍕</div>
+                    <div class="restaurant-info">
+                        <h3>Pizza Corner</h3>
+                        <p>Pizza • Italian • 2.5 km</p>
+                        <span class="rating">★ 4.6</span>
+                        <span class="price"> • Rp45K–100K</span>
+                    </div>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-image food-5">🍗</div>
+                    <div class="restaurant-info">
+                        <h3>Ayam Juara</h3>
+                        <p>Ayam • Rice Bowl • 1.5 km</p>
+                        <span class="rating">★ 4.8</span>
+                        <span class="price"> • Rp20K–45K</span>
+                    </div>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-image food-6">🍰</div>
+                    <div class="restaurant-info">
+                        <h3>Sweet Dessert</h3>
+                        <p>Dessert • Cake • 2.8 km</p>
+                        <span class="rating">★ 4.7</span>
+                        <span class="price"> • Rp20K–60K</span>
+                    </div>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-image food-7">🍣</div>
+                    <div class="restaurant-info">
+                        <h3>Sushi Time</h3>
+                        <p>Japanese • Sushi • 3.0 km</p>
+                        <span class="rating">★ 4.9</span>
+                        <span class="price"> • Rp50K–120K</span>
+                    </div>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-image food-8">🥤</div>
+                    <div class="restaurant-info">
+                        <h3>Fresh Drink</h3>
+                        <p>Minuman • Dessert • 1.7 km</p>
+                        <span class="rating">★ 4.6</span>
+                        <span class="price"> • Rp12K–35K</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="food-section" id="makanan">
+
+            <div class="section-title">
+                <h2>Rekomendasi untukmu</h2>
+                <a href="#">Lihat semua</a>
+            </div>
+
+            <div class="food-grid" id="foodGrid">
+
+                <div class="food-card" data-name="nasi goreng spesial">
+                    <div class="food-image food-1">🍳</div>
+                    <div class="food-info">
+                        <h3>Nasi Goreng Spesial</h3>
+                        <p>Nasi goreng dengan telur dan ayam.</p>
+
+                        <div class="food-bottom">
+                            <span class="food-price">Rp28.000</span>
+                            <button class="add-btn"
+                                onclick="addToCart('Nasi Goreng Spesial', 28000)">
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-card" data-name="mie ayam">
+                    <div class="food-image food-2">🍜</div>
+                    <div class="food-info">
+                        <h3>Mie Ayam Original</h3>
+                        <p>Mie kenyal dengan ayam gurih.</p>
+
+                        <div class="food-bottom">
+                            <span class="food-price">Rp20.000</span>
+                            <button class="add-btn"
+                                onclick="addToCart('Mie Ayam Original', 20000)">
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-card" data-name="burger beef">
+                    <div class="food-image food-3">🍔</div>
+                    <div class="food-info">
+                        <h3>Classic Beef Burger</h3>
+                        <p>Beef patty, cheese dan sayuran.</p>
+
+                        <div class="food-bottom">
+                            <span class="food-price">Rp35.000</span>
+                            <button class="add-btn"
+                                onclick="addToCart('Classic Beef Burger', 35000)">
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-card" data-name="pizza cheese">
+                    <div class="food-image food-4">🍕</div>
+                    <div class="food-info">
+                        <h3>Cheese Pizza</h3>
+                        <p>Pizza dengan keju mozzarella.</p>
+
+                        <div class="food-bottom">
+                            <span class="food-price">Rp55.000</span>
+                            <button class="add-btn"
+                                onclick="addToCart('Cheese Pizza', 55000)">
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-card" data-name="ayam crispy">
+                    <div class="food-image food-5">🍗</div>
+                    <div class="food-info">
+                        <h3>Ayam Crispy</h3>
+                        <p>Ayam goreng crispy dengan nasi.</p>
+
+                        <div class="food-bottom">
+                            <span class="food-price">Rp24.000</span>
+                            <button class="add-btn"
+                                onclick="addToCart('Ayam Crispy', 24000)">
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-card" data-name="chocolate cake">
+                    <div class="food-image food-6">🍰</div>
+                    <div class="food-info">
+                        <h3>Chocolate Cake</h3>
+                        <p>Kue cokelat lembut dan manis.</p>
+
+                        <div class="food-bottom">
+                            <span class="food-price">Rp22.000</span>
+                            <button class="add-btn"
+                                onclick="addToCart('Chocolate Cake', 22000)">
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-card" data-name="sushi salmon">
+                    <div class="food-image food-7">🍣</div>
+                    <div class="food-info">
+                        <h3>Salmon Sushi</h3>
+                        <p>Sushi salmon dengan saus spesial.</p>
+
+                        <div class="food-bottom">
+                            <span class="food-price">Rp65.000</span>
+                            <button class="add-btn"
+                                onclick="addToCart('Salmon Sushi', 65000)">
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-card" data-name="es kopi susu">
+                    <div class="food-image food-8">☕</div>
+                    <div class="food-info">
+                        <h3>Es Kopi Susu</h3>
+                        <p>Kopi susu gula aren dingin.</p>
+
+                        <div class="food-bottom">
+                            <span class="food-price">Rp18.000</span>
+                            <button class="add-btn"
+                                onclick="addToCart('Es Kopi Susu', 18000)">
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="info-banner">
+            <div>
+                <h2>Pesan makanan lebih mudah</h2>
+                <p>
+                    Pilih restoran, masukkan makanan ke keranjang,
+                    lalu lakukan checkout.
+                </p>
+            </div>
+
+            <button class="download-btn" onclick="showNotification('Fitur aplikasi sedang disiapkan!')">
+                Pelajari
+            </button>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+
+    <div class="footer-content">
+
+        <div>
+            <div class="footer-logo">gofood</div>
+
+            <p style="color:#666; font-size:14px; line-height:1.7;">
+                Platform demo pemesanan makanan dengan
+                tampilan modern dan responsive.
+            </p>
+        </div>
+
+        <div class="footer-column">
+            <h4>GoFood</h4>
+            <a href="#">Tentang</a>
+            <a href="#">Karier</a>
+            <a href="#">Blog</a>
+            <a href="#">Promo</a>
+        </div>
+
+        <div class="footer-column">
+            <h4>Bantuan</h4>
+            <a href="#">Pusat Bantuan</a>
+            <a href="#">Hubungi Kami</a>
+            <a href="#">Keamanan</a>
+            <a href="#">Syarat & Ketentuan</a>
+        </div>
+
+        <div class="footer-column">
+            <h4>Ikuti Kami</h4>
+            <a href="#">Instagram</a>
+            <a href="#">Facebook</a>
+            <a href="#">YouTube</a>
+            <a href="#">TikTok</a>
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 GoFood Demo. Dibuat untuk keperluan pembelajaran.
+    </div>
+
+</footer>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<div class="cart-panel" id="cartPanel">
+
+    <div class="cart-header">
+        <h2>Keranjang</h2>
+
+        <button class="close-cart" onclick="closeCart()">
+            ×
+        </button>
+    </div>
+
+    <div class="cart-items" id="cartItems">
+
+        <div class="empty-cart">
+            <div style="font-size:50px;">🛒</div>
+            <p>Keranjang masih kosong.</p>
+        </div>
+
+    </div>
+
+    <div class="cart-footer">
+
+        <div class="total-row">
+            <span>Total</span>
+            <span id="cartTotal">Rp0</span>
+        </div>
+
+        <button class="checkout-btn" onclick="checkout()">
+            Checkout
+        </button>
+
+    </div>
+
+</div>
+
+<div class="notification" id="notification">
+    Item ditambahkan ke keranjang!
+</div>
+
+<script>
+
+    let cart = [];
+
+    function formatRupiah(number) {
+        return new Intl.NumberFormat(
+            "id-ID",
+            {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0
+            }
+        ).format(number);
+    }
+
+    function addToCart(name, price) {
+
+        const existing = cart.find(
+            item => item.name === name
+        );
+
+        if (existing) {
+            existing.qty++;
+        } else {
+            cart.push({
+                name: name,
+                price: price,
+                qty: 1
+            });
+        }
+
+        updateCart();
+
+        showNotification(
+            name + " ditambahkan!"
+        );
+    }
+
+    function removeFromCart(index) {
+
+        cart.splice(index, 1);
+
+        updateCart();
+
+        showNotification(
+            "Item dihapus dari keranjang."
+        );
+    }
+
+    function updateCart() {
+
+        const cartItems =
+            document.getElementById("cartItems");
+
+        const cartCount =
+            document.getElementById("cartCount");
+
+        const cartTotal =
+            document.getElementById("cartTotal");
+
+        let totalItems = 0;
+        let totalPrice = 0;
+
+        cart.forEach(item => {
+            totalItems += item.qty;
+            totalPrice += item.price * item.qty;
+        });
+
+        cartCount.textContent = totalItems;
+
+        cartTotal.textContent =
+            formatRupiah(totalPrice);
+
+        if (cart.length === 0) {
+
+            cartItems.innerHTML = `
+                <div class="empty-cart">
+                    <div style="font-size:50px;">🛒</div>
+                    <p>Keranjang masih kosong.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+        cartItems.innerHTML = cart.map(
+            (item, index) => `
+
+                <div class="cart-item">
+
+                    <div>
+                        <h4>
+                            ${item.name}
+                            × ${item.qty}
+                        </h4>
+
+                        <p>
+                            ${formatRupiah(
+                                item.price * item.qty
+                            )}
+                        </p>
+                    </div>
+
+                    <button
+                        class="remove-item"
+                        onclick="removeFromCart(${index})"
+                    >
+                        Hapus
+                    </button>
+
+                </div>
+
+            `
+        ).join("");
+    }
+
+    function openCart() {
+
+        document
+            .getElementById("cartPanel")
+            .classList.add("active");
+
+        document
+            .getElementById("overlay")
+            .classList.add("active");
+    }
+
+    function closeCart() {
+
+        document
+            .getElementById("cartPanel")
+            .classList.remove("active");
+
+        document
+            .getElementById("overlay")
+            .classList.remove("active");
+    }
+
+    function checkout() {
+
+        if (cart.length === 0) {
+
+            showNotification(
+                "Keranjang masih kosong!"
+            );
+
+            return;
+        }
+
+        showNotification(
+            "Checkout berhasil dibuat!"
+        );
+
+        cart = [];
+
+        updateCart();
+
+        setTimeout(
+            closeCart,
+            800
+        );
+    }
+
+    function showNotification(message) {
+
+        const notification =
+            document.getElementById("notification");
+
+        notification.textContent = message;
+
+        notification.classList.add("show");
+
+        setTimeout(
+            () => {
+                notification.classList.remove("show");
+            },
+            2500
+        );
+    }
+
+    function showPromo(code) {
+
+        showNotification(
+            "Kode promo " +
+            code +
+            " berhasil dipilih!"
+        );
+    }
+
+    function searchFood() {
+
+        const keyword =
+            document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase()
+                .trim();
+
+        const cards =
+            document.querySelectorAll(
+                ".food-card"
+            );
+
+        cards.forEach(card => {
+
+            const name =
+                card
+                    .getAttribute("data-name")
+                    .toLowerCase();
+
+            if (
+                name.includes(keyword)
+                || keyword === ""
+            ) {
+
+                card.style.display = "block";
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+    }
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Escape") {
+                closeCart();
+            }
+
+        }
+    );
+
+    updateCart();
+
+</script>
+
+</body>
+</html>
